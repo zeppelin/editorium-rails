@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Editorium::VERSION
   spec.authors       = ["Gabor Babicz"]
   spec.email         = ["gabor.babicz@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Will fill out later.}
+  spec.description   = %q{Will fill out later.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
