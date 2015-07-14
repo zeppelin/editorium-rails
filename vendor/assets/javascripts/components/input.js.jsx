@@ -16,7 +16,6 @@ var EditoriumInput = React.createClass({
 
   render() {
     // TODO better strip tags?
-    const previewText = this.props.renderedValue.replace(/<(?:.|\n)*?>/gm, '');
     const componentId = this.getComponentId();
 
     return (
@@ -25,16 +24,8 @@ var EditoriumInput = React.createClass({
         <input type="hidden"
           id={componentId}
           name={`${this.props.objectName}[${this.props.method}]`}
-          value={this.props.renderedValue}
+          value={this.props.value}
         />
-
-        <input type="hidden"
-          id={`${componentId}_source`}
-          name={`${this.props.objectName}[${this.props.method}_source]`}
-          value={this.props.sourceValue}
-        />
-
-        <div className="editorium-input-preview-text">{previewText}</div>
 
         <button onClick={this.openEditor} type="button">Open Editor</button>
 
@@ -43,7 +34,7 @@ var EditoriumInput = React.createClass({
 
           <EditoriumIframe
             componentId={componentId}
-            data={this.props.sourceValue}
+            data={this.props.value}
             serviceURL={this.props.serviceURL}
           />
         }
@@ -68,8 +59,7 @@ var EditoriumInput = React.createClass({
       });
     } else if (event.data.command === 'update') {
       this.setProps({
-        renderedValue: event.data.rendered,
-        sourceValue: event.data.source
+        value: event.data.source // TODO Rename
       });
     }
   },
