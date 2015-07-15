@@ -12,7 +12,7 @@ module Editorium
     attr_accessor :service_url
 
     def initialize
-      @service_url = 'http://localhost:4200'
+      @service_url = 'https://editorium.herokuapp.com'
     end
   end
 end
