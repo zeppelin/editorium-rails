@@ -16,5 +16,21 @@ module Editorium
         serviceURL: service_url
       }
     end
+
+    def render_editorium(json)
+      return  if json.nil?
+      json = JSON.parse(json)  if json.is_a?(String)
+
+      buffer = "".html_safe
+
+      json["list"].each do |widget_source|
+        widget = RecursiveOpenStruct.new(widget_source)
+        next  unless lookup_context.template_exists?("editorium/_#{widget.type}")
+
+        buffer << render("editorium/#{widget.type}", layout: false, data: widget.data)
+      end
+
+      buffer
+    end
   end
 end
