@@ -6,7 +6,8 @@ var EditoriumIframe = React.createClass({
   render() {
     const queryString = this.buildQueryString({
       id: this.props.componentId,
-      data: this.props.data
+      data: this.props.data,
+      preview_endpoint: this.props.previewEndpoint
     });
 
     return (

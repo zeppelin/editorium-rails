@@ -5,7 +5,7 @@ module Editorium
 
     def editorium_input(object_name, method, options = {})
       base_id = "#{object_name}_#{method}"
-      service_url = Editorium.try(:configuration).try(:service_url) || 'http://localhost:4200'
+      service_url = Editorium.try(:configuration).service_url
 
       react_component 'EditoriumInput', {
         prerender: true,
@@ -13,7 +13,8 @@ module Editorium
         objectName: object_name,
         method: method,
         value: (options[:value] || ''),
-        serviceURL: service_url
+        serviceURL: service_url,
+        previewEndpoint: options[:preview_endpoint]
       }
     end
 

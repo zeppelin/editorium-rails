@@ -36,6 +36,7 @@ var EditoriumInput = React.createClass({
             componentId={componentId}
             data={this.props.value}
             serviceURL={this.props.serviceURL}
+            previewEndpoint={this.props.previewEndpoint}
           />
         }
       </div>
