@@ -24,14 +24,42 @@ module Editorium
 
       buffer = "".html_safe
 
-      json["list"].each do |widget_source|
-        widget = RecursiveOpenStruct.new(widget_source)
-        next  unless lookup_context.template_exists?("editorium/_#{widget.type}")
+      if json["list"] # legacy format
+        json["list"].each do |widget_source|
+          widget = RecursiveOpenStruct.new(widget_source)
+          next  unless template_exists?(widget.type)
 
-        buffer << render("editorium/#{widget.type}", layout: false, data: widget.data)
+          buffer << render_card_to_string(widget)
+        end
+      else # MobileDoc
+        json["sections"][1].each do |section|
+          card_name = section[1]
+          payload = section[2]
+
+          card_data = {
+            type: card_name,
+            data: payload
+          }
+
+          next  unless template_exists?(card_name)
+
+          card = RecursiveOpenStruct.new(card_data)
+          buffer << render_card_to_string(card)
+        end
       end
 
       buffer
+    end
+
+
+    private
+
+    def template_exists?(card_name)
+      lookup_context.template_exists?("editorium/_#{card_name}")
+    end
+
+    def render_card_to_string(card)
+      render("editorium/#{card.type}", layout: false, data: card.data)
     end
   end
 end
