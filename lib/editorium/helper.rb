@@ -26,7 +26,7 @@ module Editorium
 
       if json["list"] # legacy format
         json["list"].each do |widget_source|
-          widget = RecursiveOpenStruct.new(widget_source)
+          widget = RecursiveOpenStruct.new(widget_source, recurse_over_arrays: true)
           next  unless template_exists?(widget.type)
 
           buffer << render_card_to_string(widget)
@@ -43,7 +43,7 @@ module Editorium
 
           next  unless template_exists?(card_name)
 
-          card = RecursiveOpenStruct.new(card_data)
+          card = RecursiveOpenStruct.new(card_data, recurse_over_arrays: true)
           buffer << render_card_to_string(card)
         end
       end
