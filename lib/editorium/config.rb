@@ -12,7 +12,7 @@ module Editorium
     attr_accessor :service_url, :preview_layout
 
     def initialize
-      @service_url = 'https://editorium.herokuapp.com'
+      @service_url = 'http://editorium.herokuapp.com'
       @preview_layout = false
     end
   end
