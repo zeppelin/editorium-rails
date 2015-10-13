@@ -16,7 +16,7 @@ var EditoriumIframe = React.createClass({
         height: '100%',
         left: 0,
         top: 0,
-        position: 'absolute',
+        position: 'fixed',
         visibility: 'visible',
         border: 'none',
         zIndex: '1000000'
