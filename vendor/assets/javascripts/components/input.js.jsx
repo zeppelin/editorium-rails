@@ -1,28 +1,46 @@
 var EditoriumInput = React.createClass({
 
   getInitialState() {
+    const componentId = `${this.props.objectName}_${this.props.method}`;
+    const iframeId = `${componentId}-iframe`;
+
     return {
+      componentId,
+      iframeId,
       isEditorOpened: false
-    }
+    };
   },
 
-  componentDidMount() {
-    window.addEventListener('message', this.didReceiveMessage);
-  },
+  initChannel() {
+    const iframe = document.getElementById(this.state.iframeId);
+    const channel = Channel.build({
+      // debugOutput: true,
+      window: iframe.contentWindow,
+      origin: '*',
+      scope: 'editorium'
+    });
 
-  componentWillUnmount() {
-    window.removeEventListener('message', this.didReceiveMessage);
+    channel.bind('close', ()=> {
+      this.closeEditor();
+    });
+
+    channel.bind('update', (_trans, data)=> {
+      this.setProps({
+        value: data
+      });
+    });
+
+    channel.bind('load', (_trans, data)=> {
+      return this.props.value;
+    });
   },
 
   render() {
-    // TODO better strip tags?
-    const componentId = this.getComponentId();
-
     return (
       <div className="editorium-input">
 
         <input type="hidden"
-          id={componentId}
+          id={this.state.componentId}
           name={`${this.props.objectName}[${this.props.method}]`}
           value={this.props.value}
         />
@@ -33,10 +51,8 @@ var EditoriumInput = React.createClass({
           this.state.isEditorOpened &&
 
           <EditoriumIframe
-            componentId={componentId}
-            data={this.props.value}
+            iframeId={this.state.iframeId}
             serviceURL={this.props.serviceURL}
-            previewEndpoint={this.props.previewEndpoint}
           />
         }
       </div>
@@ -47,25 +63,15 @@ var EditoriumInput = React.createClass({
     this.setState({
       isEditorOpened: true
     });
+
+    setTimeout(()=> { // Guess this needs to happen after child render?
+      this.initChannel();
+    }, 0);
   },
 
-  didReceiveMessage(event) {
-    if (event.data.id !== this.getComponentId()) {
-      return;
-    }
-
-    if (event.data.command === 'close') {
-      this.setState({
-        isEditorOpened: false
-      });
-    } else if (event.data.command === 'update') {
-      this.setProps({
-        value: event.data.source // TODO Rename
-      });
-    }
-  },
-
-  getComponentId() {
-    return `${this.props.objectName}_${this.props.method}`;
+  closeEditor() {
+    this.setState({
+      isEditorOpened: false
+    });
   }
 });
