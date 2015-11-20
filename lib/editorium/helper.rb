@@ -7,15 +7,15 @@ module Editorium
       base_id = "#{object_name}_#{method}"
       service_url = Editorium.try(:configuration).service_url
 
-      react_component 'EditoriumInput', {
-        prerender: true,
-
+      react_component('EditoriumInput', {
         objectName: object_name,
         method: method,
         value: (options[:value] || ''),
         serviceURL: service_url,
         previewEndpoint: options[:preview_endpoint]
-      }
+      }, {
+        prerender: true
+      })
     end
 
     def render_editorium(json)
