@@ -14,7 +14,7 @@ module Editorium
         serviceURL: service_url,
         previewEndpoint: options[:preview_endpoint]
       }, {
-        prerender: true
+        prerender: false
       })
     end
 
