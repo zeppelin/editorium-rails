@@ -51,7 +51,7 @@ var EditoriumInput = React.createClass({
         caption = 'Edit 1 card';
         break;
     default:
-       caption = `Edit ${this.sectionLength()} cards`;
+        caption = `Edit ${this.sectionLength()} cards`;
     }
     return (
       <div className="editorium-input">
