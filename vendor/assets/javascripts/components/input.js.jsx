@@ -25,8 +25,7 @@ var EditoriumInput = React.createClass({
     });
 
     channel.bind('update', (_trans, data)=> {
-      if(this.sectionLength(data) == 0) data = '';
-      console.log(data);
+      if (this.sectionLength(data) == 0) data = '';
       this.setProps({
         value: data
       });
@@ -43,7 +42,9 @@ var EditoriumInput = React.createClass({
   },
 
   render() {
-    switch(this.sectionLength()) {
+    let caption;
+    let sectionLength = this.sectionLength()
+    switch (sectionLength) {
     case 0:
         caption = 'Create';
         break;
@@ -51,7 +52,7 @@ var EditoriumInput = React.createClass({
         caption = 'Edit 1 card';
         break;
     default:
-        caption = `Edit ${this.sectionLength()} cards`;
+        caption = `Edit ${sectionLength} cards`;
     }
     return (
       <div className="editorium-input">
