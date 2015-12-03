@@ -25,6 +25,7 @@ var EditoriumInput = React.createClass({
     });
 
     channel.bind('update', (_trans, data)=> {
+      if (this.sectionLength(data) == 0) data = '';
       this.setProps({
         value: data
       });
@@ -35,7 +36,24 @@ var EditoriumInput = React.createClass({
     });
   },
 
+  sectionLength(data) {
+    data = data || this.props.value;
+    return data && data.length > 0 ? JSON.parse(data)['sections'][1].length : 0;
+  },
+
   render() {
+    let caption;
+    let sectionLength = this.sectionLength()
+    switch (sectionLength) {
+    case 0:
+        caption = 'Create';
+        break;
+    case 1:
+        caption = 'Edit 1 card';
+        break;
+    default:
+        caption = `Edit ${sectionLength} cards`;
+    }
     return (
       <div className="editorium-input">
 
@@ -45,7 +63,7 @@ var EditoriumInput = React.createClass({
           value={this.props.value}
         />
 
-        <button onClick={this.openEditor} type="button">Open Editor</button>
+        <button onClick={this.openEditor} type="button">{caption}</button>
 
         {
           this.state.isEditorOpened &&
