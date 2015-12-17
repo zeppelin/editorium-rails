@@ -12,7 +12,10 @@ module Editorium
         method: method,
         value: (options[:value] || ''),
         serviceURL: service_url,
-        previewEndpoint: options[:preview_endpoint]
+        previewEndpoint: options[:preview_endpoint],
+        config: {
+          title: options[:title]
+        }
       }, {
         prerender: true
       })

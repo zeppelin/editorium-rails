@@ -20,6 +20,10 @@ var EditoriumInput = React.createClass({
       scope: 'editorium'
     });
 
+    channel.bind('loadConfig', ()=> {
+      return this.props.config;
+    });
+
     channel.bind('close', ()=> {
       this.closeEditor();
     });
