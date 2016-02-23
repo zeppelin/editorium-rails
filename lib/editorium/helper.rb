@@ -11,8 +11,10 @@ module Editorium
         objectName: object_name,
         method: method,
         value: (options[:value] || ''),
+        fieldName: (options[:field_name] || ''),
         serviceURL: service_url,
         previewEndpoint: options[:preview_endpoint],
+        editoriumId: (options[:editorium_id] || ''),
         config: {
           title: options[:title]
         }
