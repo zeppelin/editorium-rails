@@ -40,6 +40,30 @@ var EditoriumInput = React.createClass({
     });
   },
 
+  getFieldName() {
+    name = this.props.objectName
+    if(this.props.fieldName.length > 0) {
+      name += '['+this.props.method+'_attributes]';
+      name += '['+this.props.fieldName+']';
+    }
+    else{
+      name += '['+this.props.method+']';
+    }
+    return name;
+  },
+
+  getIdName() {
+    name = this.props.objectName
+    if(this.props.fieldName.length > 0) {
+      name += '['+this.props.method+'_attributes]';
+      name += '[id]';
+    }
+    else{
+      name += '[id]';
+    }
+    return name;
+  },
+
   sectionLength(data) {
     data = data || this.props.value;
     return data && data.length > 0 ? JSON.parse(data)['sections'][1].length : 0;
@@ -63,8 +87,13 @@ var EditoriumInput = React.createClass({
 
         <input type="hidden"
           id={this.state.componentId}
-          name={`${this.props.objectName}[${this.props.method}]`}
+          name={this.getFieldName()}
           value={this.props.value}
+        />
+
+        <input type="hidden"
+          name={this.getIdName()}
+          value={this.props.editoriumId}
         />
 
         <button onClick={this.openEditor} type="button">{caption}</button>
