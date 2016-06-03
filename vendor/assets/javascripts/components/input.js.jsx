@@ -7,6 +7,7 @@ var EditoriumInput = React.createClass({
     return {
       componentId,
       iframeId,
+      value: this.props.value,
       isEditorOpened: false
     };
   },
@@ -30,13 +31,13 @@ var EditoriumInput = React.createClass({
 
     channel.bind('update', (_trans, data)=> {
       if (this.sectionLength(data) == 0) data = '';
-      this.setProps({
+      this.setState({
         value: data
       });
     });
 
     channel.bind('load', (_trans, data)=> {
-      return this.props.value;
+      return this.state.value;
     });
   },
 
@@ -65,7 +66,7 @@ var EditoriumInput = React.createClass({
   },
 
   sectionLength(data) {
-    data = data || this.props.value;
+    data = data || this.state.value;
     return data && data.length > 0 ? JSON.parse(data)['sections'][1].length : 0;
   },
 
@@ -88,7 +89,7 @@ var EditoriumInput = React.createClass({
         <input type="hidden"
           id={this.state.componentId}
           name={this.getFieldName()}
-          value={this.props.value}
+          value={this.state.value}
         />
 
         <input type="hidden"
