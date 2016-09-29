@@ -7,6 +7,7 @@ var EditoriumInput = React.createClass({
     return {
       componentId,
       iframeId,
+      value: this.props.value,
       isEditorOpened: false
     };
   },
@@ -30,18 +31,42 @@ var EditoriumInput = React.createClass({
 
     channel.bind('update', (_trans, data)=> {
       if (this.sectionLength(data) == 0) data = '';
-      this.setProps({
+      this.setState({
         value: data
       });
     });
 
     channel.bind('load', (_trans, data)=> {
-      return this.props.value;
+      return this.state.value;
     });
   },
 
+  getFieldName() {
+    name = this.props.objectName
+    if(this.props.fieldName.length > 0) {
+      name += '['+this.props.method+'_attributes]';
+      name += '['+this.props.fieldName+']';
+    }
+    else{
+      name += '['+this.props.method+']';
+    }
+    return name;
+  },
+
+  getIdName() {
+    name = this.props.objectName
+    if(this.props.fieldName.length > 0) {
+      name += '['+this.props.method+'_attributes]';
+      name += '[id]';
+    }
+    else{
+      name += '[id]';
+    }
+    return name;
+  },
+
   sectionLength(data) {
-    data = data || this.props.value;
+    data = data || this.state.value;
     return data && data.length > 0 ? JSON.parse(data)['sections'][1].length : 0;
   },
 
@@ -63,8 +88,13 @@ var EditoriumInput = React.createClass({
 
         <input type="hidden"
           id={this.state.componentId}
-          name={`${this.props.objectName}[${this.props.method}]`}
-          value={this.props.value}
+          name={this.getFieldName()}
+          value={this.state.value}
+        />
+
+        <input type="hidden"
+          name={this.getIdName()}
+          value={this.props.editoriumId}
         />
 
         <button onClick={this.openEditor} type="button">{caption}</button>
