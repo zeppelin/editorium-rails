@@ -1,16 +1,19 @@
-var EditoriumInput = React.createClass({
+class EditoriumInput extends React.Component {
+  constructor(props) {
+    super(props);
 
-  getInitialState() {
     const componentId = `${this.props.objectName}_${this.props.method}`;
     const iframeId = `${componentId}-iframe`;
 
-    return {
+    this.state = {
       componentId,
       iframeId,
       value: this.props.value,
       isEditorOpened: false
     };
-  },
+
+    this.openEditor = this.openEditor.bind(this);
+  }
 
   initChannel() {
     const iframe = document.getElementById(this.state.iframeId);
@@ -39,7 +42,7 @@ var EditoriumInput = React.createClass({
     channel.bind('load', (_trans, data)=> {
       return this.state.value;
     });
-  },
+  }
 
   getFieldName() {
     name = this.props.objectName
@@ -51,7 +54,7 @@ var EditoriumInput = React.createClass({
       name += '['+this.props.method+']';
     }
     return name;
-  },
+  }
 
   getIdName() {
     name = this.props.objectName
@@ -63,12 +66,12 @@ var EditoriumInput = React.createClass({
       name += '[id]';
     }
     return name;
-  },
+  }
 
   sectionLength(data) {
     data = data || this.state.value;
     return data && data.length > 0 ? JSON.parse(data)['sections'][1].length : 0;
-  },
+  }
 
   render() {
     let caption;
@@ -83,6 +86,7 @@ var EditoriumInput = React.createClass({
     default:
         caption = `Edit ${sectionLength} cards`;
     }
+
     return (
       <div className="editorium-input">
 
@@ -109,7 +113,7 @@ var EditoriumInput = React.createClass({
         }
       </div>
     );
-  },
+  }
 
   openEditor() {
     this.setState({
@@ -119,11 +123,11 @@ var EditoriumInput = React.createClass({
     setTimeout(()=> { // Guess this needs to happen after child render?
       this.initChannel();
     }, 0);
-  },
+  }
 
   closeEditor() {
     this.setState({
       isEditorOpened: false
     });
   }
-});
+);
