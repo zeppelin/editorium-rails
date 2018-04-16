@@ -130,4 +130,4 @@ class EditoriumInput extends React.Component {
       isEditorOpened: false
     });
   }
-);
+};
