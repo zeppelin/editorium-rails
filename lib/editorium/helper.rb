@@ -11,8 +11,10 @@ module Editorium
         objectName: object_name,
         method: method,
         value: (options[:value] || ''),
+        fieldName: (options[:field_name] || ''),
         serviceURL: service_url,
         previewEndpoint: options[:preview_endpoint],
+        editoriumId: (options[:editorium_id] || ''),
         config: {
           title: options[:title]
         }
@@ -36,7 +38,7 @@ module Editorium
         end
       else # MobileDoc
         json["sections"][1].each do |section|
-          card_name = section[1]
+          card_name = section[1].sub('-', '_')
           payload = section[2]
 
           card_data = {
@@ -44,7 +46,7 @@ module Editorium
             data: payload
           }
 
-          next  unless template_exists?(card_name)
+          next unless template_exists?(card_name)
 
           card = RecursiveOpenStruct.new(card_data, recurse_over_arrays: true)
           buffer << render_card_to_string(card)
